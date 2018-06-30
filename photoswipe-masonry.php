@@ -1,13 +1,11 @@
 <?php
 /*
-Plugin Name: Photoswipe Masonry
-Plugin URI: http://thriveweb.com.au/the-lab/photoswipe/
-Description: This is a image gallery plugin for WordPress built using PhotoSwipe from  Dmitry Semenov.
-<a href="http://photoswipe.com/">PhotoSwipe</a>
-Author: Web Design Gold Coast
-Author URI: http://thriveweb.com.au/
-Version: 1.2.7
-Text Domain: photoswipe-masonry
+Plugin Name: Photoswipe Masonry (Forked)
+Plugin URI: https://github.com/thanks2music/photoswipe-bricks
+Description: This is a image gallery plugin for WordPress fork from Dmitry Semenov.
+Author: thanks2music
+Author URI: https://github.com/thanks2music/photoswipe-bricks
+Version: 0.0.1 (1.2.7 forked)
 */
 
 /*  Copyright 2010  Dean Oakley  (email : dean@thriveweb.com.au)
@@ -350,7 +348,11 @@ function photoswipe_shortcode( $attr ) {
 
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
+  $amp_flag = false;
 
+  if ($_GET['amp'] === '1') {
+    $amp_flag = true;
+  }
 
 	$output_buffer='';
 
@@ -379,87 +381,89 @@ function photoswipe_shortcode( $attr ) {
         $itemwidth = $columns > 0 ? floor(100/$columns) : 100;
 
 
-		$output_buffer .= "
+    if (! $amp_flag) {
+      $output_buffer .= "
 
-		<style type='text/css'>
+      <style type='text/css'>
 
-			/* PhotoSwipe Plugin */
-			.psgal {
-				margin: auto;
-				padding-bottom:40px;
+        /* PhotoSwipe Plugin */
+        .psgal {
+          margin: auto;
+          padding-bottom:40px;
 
-				-webkit-transition: all 0.4s ease;
-				-moz-transition: all 0.4s ease;
-				-o-transition: all 0.4s ease;
-				transition: all 0.4s ease;
+          -webkit-transition: all 0.4s ease;
+          -moz-transition: all 0.4s ease;
+          -o-transition: all 0.4s ease;
+          transition: all 0.4s ease;
 
-				opacity:0.1;
-				";
+          opacity:0.1;
+          ";
 
-				if($options['use_masonry']) $output_buffer .="opacity:1; text-align:center;";
+          if($options['use_masonry']) $output_buffer .="opacity:1; text-align:center;";
 
-				$output_buffer .= "
+          $output_buffer .= "
 
-			}
+        }
 
-			.psgal.photoswipe_showme{
-				opacity:1;
-			}
+        .psgal.photoswipe_showme{
+          opacity:1;
+        }
 
-			.psgal figure {
-				float: left;
+        .psgal figure {
+          float: left;
 
-				";
+          ";
 
-				if($options['use_masonry']) $output_buffer .="float:none; display:inline-block;;";
+          if($options['use_masonry']) $output_buffer .="float:none; display:inline-block;;";
 
-				$output_buffer .= "
+          $output_buffer .= "
 
-				text-align: center;
-				width: ".$options['thumbnail_width']."px;
+          text-align: center;
+          width: ".$options['thumbnail_width']."px;
 
-				padding:5px;
-				margin: 0px;
-				box-sizing:border-box;
-			}
-			.psgal a{
-				display:block;
-			}
+          padding:5px;
+          margin: 0px;
+          box-sizing:border-box;
+        }
+        .psgal a{
+          display:block;
+        }
 
-			.psgal img {
-				margin:auto;
-				max-width:100%;
-				width: auto;
-				height: auto;
-				border: 0;
-			}
-			.psgal figure figcaption{
-				font-size:13px;
-			}
+        .psgal img {
+          margin:auto;
+          max-width:100%;
+          width: auto;
+          height: auto;
+          border: 0;
+        }
+        .psgal figure figcaption{
+          font-size:13px;
+        }
 
-			.msnry{
-				margin:auto;
-			}
-			.pswp__caption__center{
-				text-align: center;
-			}
-			";
+        .msnry{
+          margin:auto;
+        }
+        .pswp__caption__center{
+          text-align: center;
+        }
+        ";
 
-			if(!$options['show_captions']) $output_buffer .="
+        if(!$options['show_captions']) $output_buffer .="
 
-			.photoswipe-gallery-caption{
-				display:none;
-			}
+        .photoswipe-gallery-caption{
+          display:none;
+        }
 
-			";
+        ";
 
-			$output_buffer .= "
-		</style>";
+        $output_buffer .= "
+      </style>";
+      $output_buffer .=' <div style="clear:both"></div>';
+    }
 
-		$size_class = sanitize_html_class( $args['size'] );
-		$output_buffer .=' <div style="clear:both"></div>
+    $size_class = sanitize_html_class( $args['size'] );
 
-		<div id="psgal_'.$post_id.'" class="psgal gallery-columns-'.$columns.' gallery-size-'.$size_class.'" itemscope itemtype="http://schema.org/ImageGallery" >';
+		$output_buffer .='<div id="psgal_'.$post_id.'" class="psgal gallery-columns-'.$columns.' gallery-size-'.$size_class.'" itemscope itemtype="http://schema.org/ImageGallery" >';
 
 
 		if ( !empty($attachments) ) {
