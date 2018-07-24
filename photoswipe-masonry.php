@@ -495,47 +495,42 @@ function photoswipe_shortcode( $attr ) {
 			}
 		}
 
+    if (! $amp_flag) {
+      $output_buffer .="</div>
+      <div style='clear:both'></div>
 
+      <script type='text/javascript'>
 
-		$output_buffer .="</div>
+        var container_".$post_id." = document.querySelector('#psgal_".$post_id."');
+        var msnry;
 
-		<div style='clear:both'></div>
+        // initialize  after all images have loaded
+        imagesLoaded( container_".$post_id.", function() {
 
-		<script type='text/javascript'>
+          ";
 
-			var container_".$post_id." = document.querySelector('#psgal_".$post_id."');
-			var msnry;
+          if(!$options['use_masonry']){
+             $output_buffer .="
 
-			// initialize  after all images have loaded
-			imagesLoaded( container_".$post_id.", function() {
+              // initialize Masonry after all images have loaded
+              new Masonry( container_".$post_id.", {
+                // options...
+                itemSelector: '.msnry_item',
+                //columnWidth: ".$options['thumbnail_width'].",
+                isFitWidth: true
+              });
 
-				";
+              (container_".$post_id.").className += ' photoswipe_showme';
 
-				if(!$options['use_masonry']){
-					 $output_buffer .="
+              ";
+          }
 
-						// initialize Masonry after all images have loaded
-						new Masonry( container_".$post_id.", {
-						  // options...
-						  itemSelector: '.msnry_item',
-						  //columnWidth: ".$options['thumbnail_width'].",
-						  isFitWidth: true
-						});
+          $output_buffer .="
 
-						(container_".$post_id.").className += ' photoswipe_showme';
-
-						";
-				}
-
-				$output_buffer .="
-
-			});
-
-
-		</script>
-
-	";
-
+        });
+      </script>
+    ";
+    }
 
 		return $output_buffer;
 }
