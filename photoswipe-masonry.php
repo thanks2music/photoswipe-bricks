@@ -493,11 +493,11 @@ function photoswipe_shortcode( $attr ) {
 			    </figure>
 				';
 			}
+      $output_buffer .="</div>";
 		}
 
     if (! $amp_flag) {
-      $output_buffer .="</div>
-      <div style='clear:both'></div>
+      $output_buffer .="<div style='clear:both'></div>
 
       <script type='text/javascript'>
 
