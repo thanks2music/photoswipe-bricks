@@ -480,17 +480,32 @@ function photoswipe_shortcode( $attr ) {
         $image_caption = $_post->post_excerpt;
         $image_description = $_post->post_content;
 
+        if ($amp_flag) {
+          $output_buffer .='<amp-image-lightbox id="lightbox1" layout="nodisplay"></amp-image-lightbox>';
+        }
+
         $output_buffer .='
-        <figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject">
-          <a href="'. $full[0] .'" itemprop="contentUrl" data-size="'.$full[1].'x'.$full[2].'" data-caption="'. $image_caption .'" >';
-            if ($amp_flag) {
-              $output_buffer .= '<amp-img src="'.$thumb[0].'" width="'.$full[1].'" height="'.$full[2].'" layout="responsive" alt="'.$image_alttext.'"></amp-img>';
-            } else {
-              $output_buffer .= '<img src='. $thumb[0] .' itemprop="thumbnail" alt="'.$image_alttext.'"  />';
-            }
-            $output_buffer .= '</a>
-            <figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>
-          </figure>
+        <figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject">';
+          if ($amp_flag) {
+            $output_buffer .= '<amp-img 
+              on="tap:lightbox1"
+              role="button"
+              tabindex="0"
+              src="'.$thumb[0].'" 
+              title="'.$image_caption.'"
+              width="'.$full[1].'" 
+              height="'.$full[2].'" 
+              layout="responsive" 
+              alt="'.$image_caption.'">
+            </amp-img>
+            <figcaption>'.$image_caption.'</figcaption>';
+          } else {
+            $output_buffer .='<a href="'. $full[0] .'" itemprop="contentUrl" data-size="'.$full[1].'x'.$full[2].'" data-caption="'. $image_caption .'" >';
+            $output_buffer .= '<img src='. $thumb[0] .' itemprop="thumbnail" alt="'.$image_alttext.'"  />';
+            $output_buffer .= '</a><figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>';
+          }
+        $output_buffer .='
+        </figure>
         ';
       }
       $output_buffer .="</div>";
