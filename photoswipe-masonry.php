@@ -508,7 +508,6 @@ function photoswipe_shortcode( $attr ) {
         ';
       }
       $output_buffer .="</div>";
-      $lightbox_len++;
     }
 
     if (! $amp_flag) {
