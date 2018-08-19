@@ -467,6 +467,7 @@ function photoswipe_shortcode( $attr ) {
 
 
     if ( !empty($attachments) ) {
+      $lightbox_name = 'lightbox' . (string)$photoswipe_count;
       foreach ( $attachments as $aid => $attachment ) {
 
         $thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
@@ -488,10 +489,8 @@ function photoswipe_shortcode( $attr ) {
         <figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject">';
           if ($amp_flag) {
             $output_buffer .= '<amp-img 
-              on="tap:lightbox1"
-              role="button"
-              tabindex="0"
-              src="'.$thumb[0].'" 
+              lightbox="'.$lightbox_name.'"
+              src="'.$full[0].'" 
               title="'.$image_caption.'"
               width="'.$full[1].'" 
               height="'.$full[2].'" 
@@ -509,6 +508,7 @@ function photoswipe_shortcode( $attr ) {
         ';
       }
       $output_buffer .="</div>";
+      $lightbox_len++;
     }
 
     if (! $amp_flag) {
