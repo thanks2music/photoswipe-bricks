@@ -350,7 +350,7 @@ function photoswipe_shortcode( $attr ) {
   $post_id = intval($post->ID) . '_' . $photoswipe_count;
   $amp_flag = false;
 
-  if ($_GET['amp'] === '1') {
+  if (! empty($_GET['amp']) && $_GET['amp'] === '1') {
     $amp_flag = true;
   }
 
@@ -410,8 +410,6 @@ function photoswipe_shortcode( $attr ) {
         }
 
         .psgal figure {
-          float: left;
-
           ";
 
     if($options['use_masonry']) $output_buffer .="float:none; display:inline-block;;";
@@ -436,9 +434,6 @@ function photoswipe_shortcode( $attr ) {
           height: auto;
           border: 0;
         }
-        .psgal figure figcaption{
-          font-size:13px;
-        }
 
         .msnry{
           margin:auto;
@@ -458,7 +453,6 @@ function photoswipe_shortcode( $attr ) {
 
     $output_buffer .= "
       </style>";
-      $output_buffer .=' <div style="clear:both"></div>';
     }
 
     $size_class = sanitize_html_class( $args['size'] );
@@ -511,8 +505,7 @@ function photoswipe_shortcode( $attr ) {
     }
 
     if (! $amp_flag) {
-      $output_buffer .="<div style='clear:both'></div>
-
+      $output_buffer .="
       <script type='text/javascript'>
 
         var container_".$post_id." = document.querySelector('#psgal_".$post_id."');
@@ -552,31 +545,18 @@ function photoswipe_shortcode( $attr ) {
 
 function photoswipe_footer() {
   echo <<<EOF
-      <!-- Root element of PhotoSwipe. Must have class pswp. -->
       <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-          <!-- Background of PhotoSwipe.
-               Its a separate element, as animating opacity is faster than rgba(). -->
           <div class="pswp__bg"></div>
-
-          <!-- Slides wrapper with overflow:hidden. -->
           <div class="pswp__scroll-wrap">
-
-              <!-- Container that holds slides.
-                      PhotoSwipe keeps only 3 slides in DOM to save memory. -->
               <div class="pswp__container">
-                  <!-- dont modify these 3 pswp__item elements, data is added later on -->
                   <div class="pswp__item"></div>
                   <div class="pswp__item"></div>
                   <div class="pswp__item"></div>
               </div>
 
-              <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
               <div class="pswp__ui pswp__ui--hidden">
 
                   <div class="pswp__top-bar">
-
-                      <!--  Controls are self-explanatory. Order can be changed. -->
 
                       <div class="pswp__counter"></div>
 
@@ -588,8 +568,6 @@ function photoswipe_footer() {
 
                       <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
-                      <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                      <!-- element will get class pswp__preloader--active when preloader is running -->
                       <div class="pswp__preloader">
                           <div class="pswp__preloader__icn">
                             <div class="pswp__preloader__cut">
